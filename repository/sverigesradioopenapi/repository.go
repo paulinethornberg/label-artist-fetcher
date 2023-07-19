@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/paulinethornberg/label-artist-fetcher/model"
 )
@@ -13,13 +14,19 @@ const (
 	baseURL     = "http://api.sr.se/api/v2"
 	defaultSize = "100"
 	jsonFormat  = "json"
+	startDate   = "2023-07-03T10:30:00Z" // todo have dates as input format
+	endDate     = "2023-07-04T17:30:00Z" // todo have dates as input format
 )
 
 type Repository struct {
+	client *http.Client
 }
 
 func NewRepository() *Repository {
-	return &Repository{}
+	client := new(http.Client)
+	return &Repository{
+		client: client,
+	}
 }
 
 func (r *Repository) GetPlaylistByChannel(channel model.ChannelID) (*model.SongCollection, error) {
@@ -29,16 +36,17 @@ func (r *Repository) GetPlaylistByChannel(channel model.ChannelID) (*model.SongC
 	//endDateTime (default: startDateTime + en dag)
 	//size Sidstorlek (default: 20)
 	//format xml|json|jsonp (default: xml)
-	//path := fmt.Sprintf("/playlists/getplaylistbychannelid?id=%s&startdatetime=%s&enddatetime=%s&size=%s&format=%s",
-	//	channel,
-	//	time.Now().Add(-(time.Hour * 24 * 30)),
-	//	time.Now().String(),
-	//	defaultSize,
-	//	jsonFormat)
 
-	// TODO figure out if dates are UNIX format or some other format
-	path := fmt.Sprintf("/playlists/getplaylistbychannelid?id=%s&size=%s&format=%s",
+	// TODO: EITHER SKIP DATE OR FIX THIS
+	timeFormat := time.Now().UTC().String()
+	toTimeFormat := time.Now().Add(-time.Hour * 24 * 7).UTC().String()
+	fmt.Println(timeFormat)
+	fmt.Println(toTimeFormat)
+
+	path := fmt.Sprintf("/playlists/getplaylistbychannelid?id=%s&startdatetime=%s&enddatetime=%s&size=%s&format=%s",
 		channel,
+		startDate,
+		endDate,
 		defaultSize,
 		jsonFormat)
 
@@ -47,8 +55,7 @@ func (r *Repository) GetPlaylistByChannel(channel model.ChannelID) (*model.SongC
 		return nil, err
 	}
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := r.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -56,15 +63,14 @@ func (r *Repository) GetPlaylistByChannel(channel model.ChannelID) (*model.SongC
 	defer resp.Body.Close()
 
 	b, err := io.ReadAll(resp.Body)
-	// b, err := ioutil.ReadAll(resp.Body)  Go.1.15 and earlier
 	if err != nil {
 		return nil, err
 	}
+
 	var songCollection model.SongCollection
-	if err := json.Unmarshal(b, &songCollection); err != nil { // Parse []byte to go struct pointer
+	if err := json.Unmarshal(b, &songCollection); err != nil {
 		return nil, err
 	}
 
-	fmt.Println(songCollection)
 	return &songCollection, nil
 }

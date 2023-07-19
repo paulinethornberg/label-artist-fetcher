@@ -1,0 +1,8 @@
+version: '3.8' #TODO: check if this is latest version
+services:
+  label-artist-fetcher:
+    build: .
+    environment:
+      INTERNAL_API_ENDPOINT: ":3000"
+    ports:
+      - "3000:3000"

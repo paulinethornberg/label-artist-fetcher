@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/paulinethornberg/label-artist-fetcher/model"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBuilder_LabelArtistCollection(t *testing.T) {
@@ -33,5 +34,6 @@ func TestBuilder_LabelArtistCollection(t *testing.T) {
 	}}
 	output := builder.LabelArtistCollection(songCollection)
 	fmt.Print(output)
+	assert.Equal(t, label1, output[0].LabelName)
 	// TODO ADD github.com/stretchr/testifytestif
 }

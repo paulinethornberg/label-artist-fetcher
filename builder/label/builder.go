@@ -19,13 +19,12 @@ func (b *Builder) LabelArtistCollection(songCollection model.SongCollection) []m
 	labelCollection := make(map[string][]model.Artist, 0)
 	for _, song := range songCollection.Songs {
 		if len(labelCollection[song.RecordLabel]) == 0 {
+			// label is not yet added to map, so add new slice with artists
 			labelCollection[song.RecordLabel] = []model.Artist{{Name: song.Artist}}
-		} else {
-			labelCollection[song.RecordLabel] = append(labelCollection[song.RecordLabel],
-				model.Artist{
-					Name: song.Artist},
-			)
+			continue
 		}
+		// add artist to existing slice for label
+		labelCollection[song.RecordLabel] = append(labelCollection[song.RecordLabel], model.Artist{Name: song.Artist})
 	}
 
 	// create slice from map
