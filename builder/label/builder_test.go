@@ -1,7 +1,6 @@
 package label
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/paulinethornberg/label-artist-fetcher/model"
@@ -32,8 +31,7 @@ func TestBuilder_LabelArtistCollection(t *testing.T) {
 			RecordLabel: label1,
 		},
 	}}
-	output := builder.LabelArtistCollection(songCollection)
-	fmt.Print(output)
-	assert.Equal(t, label1, output[0].LabelName)
-	// TODO ADD github.com/stretchr/testifytestif
+	collection := builder.LabelArtistCollection(songCollection)
+	assert.Equal(t, label1, collection[0].LabelName) // should be sorted alphabetically by label
+	assert.Equal(t, label2, collection[1].LabelName)
 }

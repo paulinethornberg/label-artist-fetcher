@@ -18,7 +18,6 @@ var (
 	ChannelP3 = "p3"
 )
 
-// TODO LOOK OVER THIS STRUCTURE AND DO IT NICER :)
 func IsValidChannel(channel string) bool {
 	switch strings.ToLower(channel) {
 	case ChannelP1, ChannelP2, ChannelP3:

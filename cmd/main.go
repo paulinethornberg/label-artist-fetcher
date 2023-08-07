@@ -24,13 +24,6 @@ var (
 	internalAPI     *http.Server
 )
 
-// TODO: Create docker compose file, docker file, make it startable via docker.
-// add API handling -> should be able to get with a few parameters.
-// consider adding dates
-// update README
-// ADD BASIC DOCS FOR API IN README
-// ADD HOW TO START IN README
-
 func main() {
 	setupEnvironment()
 	setupRepository()
@@ -48,6 +41,7 @@ func main() {
 
 func setupEnvironment() {
 	config.InternalAPIEndpoint = os.Getenv(config.InternalAPIEndpointKey)
+	config.SverigesRadioEndpoint = os.Getenv(config.SverigesRadiondpointKey)
 }
 
 func setupBuilder() {

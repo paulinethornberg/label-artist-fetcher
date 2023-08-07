@@ -15,7 +15,7 @@ func NewBuilder() *Builder {
 
 func (b *Builder) LabelArtistCollection(songCollection model.SongCollection) []model.Label {
 	// create map with map of label, artist collection.
-	labelCollection := make(map[string][]model.Artist, 0)
+	labelCollection := make(map[string][]model.Artist)
 	for _, song := range songCollection.Songs {
 		if len(labelCollection[song.RecordLabel]) == 0 {
 			// label is not yet added to map, thus add new slice with artists

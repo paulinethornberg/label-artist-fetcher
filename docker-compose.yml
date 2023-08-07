@@ -1,8 +1,9 @@
-version: '3.8' #TODO: check if this is latest version
+version: '3.8'
 services:
   label-artist-fetcher:
     build: .
     environment:
       INTERNAL_API_ENDPOINT: ":3000"
+      SVERIGES_RADIO_ENDPOINT: "http://api.sr.se/api/v2"
     ports:
       - "3000:3000"

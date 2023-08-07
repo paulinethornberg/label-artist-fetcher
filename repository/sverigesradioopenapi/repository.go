@@ -7,15 +7,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/paulinethornberg/label-artist-fetcher/config"
+
 	"github.com/paulinethornberg/label-artist-fetcher/model"
 )
 
 const (
-	baseURL     = "http://api.sr.se/api/v2"
 	defaultSize = "100"
 	jsonFormat  = "json"
-	//startDate   = "2023-07-03T10:30:00Z" // todo have dates as input format
-	//endDate     = "2023-07-04T17:30:00Z" // todo have dates as input format
 )
 
 type Repository struct {
@@ -40,7 +39,7 @@ func (r *Repository) GetPlaylistByChannel(channel model.ChannelID, fromTime, toT
 		defaultSize,
 		jsonFormat)
 
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", baseURL, path), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", config.SverigesRadioEndpoint, path), nil)
 	if err != nil {
 		return nil, err
 	}

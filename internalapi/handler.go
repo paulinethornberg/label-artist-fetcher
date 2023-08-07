@@ -2,7 +2,6 @@ package internalapi
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -34,7 +33,7 @@ func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("invalid `from` timestamp"))
 		return
 	}
-	fromTime := time.Unix(fromInt, 0)
+	fromTime := time.Unix(fromInt, 0).UTC()
 
 	toString := r.URL.Query().Get("to")
 	toInt, err := strconv.ParseInt(toString, 10, 64)
@@ -43,7 +42,7 @@ func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("invalid `to` timestamp"))
 		return
 	}
-	toTime := time.Unix(toInt, 0)
+	toTime := time.Unix(toInt, 0).UTC()
 
 	// Handle GET requests here
 	inputChannel := r.URL.Query().Get("channel")
@@ -56,7 +55,6 @@ func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
 
 	data, err := h.repository.GetPlaylistByChannel(channelID, fromTime, toTime)
 	if err != nil {
-		fmt.Print(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("error getting playlist"))
 		return
