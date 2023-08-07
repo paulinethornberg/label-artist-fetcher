@@ -44,7 +44,6 @@ func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
 	}
 	toTime := time.Unix(toInt, 0).UTC()
 
-	// Handle GET requests here
 	inputChannel := r.URL.Query().Get("channel")
 	if !model.IsValidChannel(inputChannel) {
 		w.WriteHeader(http.StatusBadRequest)
