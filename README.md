@@ -27,26 +27,27 @@ Returns an array of label names and their respective artists, that have been pla
     + Headers
 
             Content-Type:application/json
-+ Body
-    + map of label names and artists belonging to that label.
-   ```json 
-     [
-        {
-          "label_name":"Ador",
-          "artists":[{
-            "name":"Newjeans"}
-          ]},
-        {
-          "label_name":"Atlantic",
-          "artists":[{
-            "name":"Jay-Z, Alicia Keys"}
-          ]}
-     ]
-   ```
+  
+    + Body
+        + map of label names and artists belonging to that label.
+       ```json 
+         [
+            {
+              "label_name":"Ador",
+              "artists":[{
+                "name":"Newjeans"}
+              ]},
+            {
+              "label_name":"Atlantic",
+              "artists":[{
+                "name":"Jay-Z, Alicia Keys"}
+              ]}
+         ]
+       ```
       
-+ Response 400
-  + Faulty request, faulty input variables
+    + Response 400
+      + Faulty request, faulty input variables
       
-+ Response 500
-  + Failed to retrieve information.
+    + Response 500
+      + Failed to retrieve information.
 
