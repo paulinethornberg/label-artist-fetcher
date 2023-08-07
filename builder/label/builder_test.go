@@ -26,12 +26,13 @@ func TestBuilder_LabelArtistCollection(t *testing.T) {
 		},
 		{
 			Title:       "Tiff",
-			Artist:      "DTiffany",
+			Artist:      "DTiffany, ABC",
 			Composer:    "T",
 			RecordLabel: label1,
 		},
 	}}
 	collection := builder.LabelArtistCollection(songCollection)
 	assert.Equal(t, label1, collection[0].LabelName) // should be sorted alphabetically by label
+	assert.Equal(t, 3, len(collection[0].Artists))   // should be sorted alphabetically by label
 	assert.Equal(t, label2, collection[1].LabelName)
 }

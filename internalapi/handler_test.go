@@ -8,16 +8,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/paulinethornberg/label-artist-fetcher/model"
-	"github.com/stretchr/testify/require"
-	"github.com/valyala/fasthttp"
-
-	mocks2 "github.com/paulinethornberg/label-artist-fetcher/builder/mocks"
-
-	"github.com/paulinethornberg/label-artist-fetcher/repository/mocks"
-
 	"github.com/gorilla/mux"
+	mocks2 "github.com/paulinethornberg/label-artist-fetcher/builder/mocks"
+	"github.com/paulinethornberg/label-artist-fetcher/model"
+	"github.com/paulinethornberg/label-artist-fetcher/repository/mocks"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"github.com/valyala/fasthttp"
 )
 
 type HandlerTestSuite struct {

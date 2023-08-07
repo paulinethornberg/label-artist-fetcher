@@ -2,6 +2,7 @@ package label
 
 import (
 	"sort"
+	"strings"
 
 	"github.com/paulinethornberg/label-artist-fetcher/model"
 )
@@ -19,11 +20,12 @@ func (b *Builder) LabelArtistCollection(songCollection model.SongCollection) []m
 	for _, song := range songCollection.Songs {
 		if len(labelCollection[song.RecordLabel]) == 0 {
 			// label is not yet added to map, thus add new slice with artists
-			labelCollection[song.RecordLabel] = []model.Artist{{Name: song.Artist}}
+			labelCollection[song.RecordLabel] = buildArrayOfArist(song.Artist)
 			continue
 		}
 		// add artist to existing slice for label
-		labelCollection[song.RecordLabel] = append(labelCollection[song.RecordLabel], model.Artist{Name: song.Artist})
+		// TODO: improvement: this can now create duplicates - make sure to check if artists are already added to label
+		labelCollection[song.RecordLabel] = append(labelCollection[song.RecordLabel], buildArrayOfArist(song.Artist)...)
 	}
 
 	// create slice from map
@@ -38,4 +40,15 @@ func (b *Builder) LabelArtistCollection(songCollection model.SongCollection) []m
 	})
 
 	return labels
+}
+
+// buildArrayOfArist handles the cases where a song is created by multiple artists
+func buildArrayOfArist(artist string) []model.Artist {
+	artistNames := strings.Split(artist, ",")
+	artists := make([]model.Artist, 0)
+	for _, a := range artistNames {
+		artist := model.Artist{Name: a}
+		artists = append(artists, artist)
+	}
+	return artists
 }
