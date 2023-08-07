@@ -40,7 +40,7 @@ Returns an array of label names and their respective artists, that have been pla
             {
               "label_name":"Atlantic",
               "artists":[{
-                "name":"Jay-Z, Alicia Keys"}
+                "name":"Jay-Z"}
               ]}
          ]
        ```
