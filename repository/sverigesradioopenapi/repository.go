@@ -14,8 +14,8 @@ const (
 	baseURL     = "http://api.sr.se/api/v2"
 	defaultSize = "100"
 	jsonFormat  = "json"
-	startDate   = "2023-07-03T10:30:00Z" // todo have dates as input format
-	endDate     = "2023-07-04T17:30:00Z" // todo have dates as input format
+	//startDate   = "2023-07-03T10:30:00Z" // todo have dates as input format
+	//endDate     = "2023-07-04T17:30:00Z" // todo have dates as input format
 )
 
 type Repository struct {
@@ -29,19 +29,9 @@ func NewRepository() *Repository {
 	}
 }
 
-func (r *Repository) GetPlaylistByChannel(channel model.ChannelID) (*model.SongCollection, error) {
-	// https://api.sr.se/api/documentation/v2/metoder/musik.html
-	// channelid (obligatorisk) - listar "låt just nu" endast för angiven kanal. Kanalerna fås med metoden lista kanaler
-	//startDateTime (default: dagens datum utan tid)
-	//endDateTime (default: startDateTime + en dag)
-	//size Sidstorlek (default: 20)
-	//format xml|json|jsonp (default: xml)
-
-	// TODO: EITHER SKIP DATE OR FIX THIS
-	timeFormat := time.Now().UTC().String()
-	toTimeFormat := time.Now().Add(-time.Hour * 24 * 7).UTC().String()
-	fmt.Println(timeFormat)
-	fmt.Println(toTimeFormat)
+func (r *Repository) GetPlaylistByChannel(channel model.ChannelID, fromTime, toTime time.Time) (*model.SongCollection, error) {
+	startDate := fromTime.Format(time.RFC3339)
+	endDate := toTime.Format(time.RFC3339)
 
 	path := fmt.Sprintf("/playlists/getplaylistbychannelid?id=%s&startdatetime=%s&enddatetime=%s&size=%s&format=%s",
 		channel,

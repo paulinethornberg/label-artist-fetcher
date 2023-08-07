@@ -2,21 +2,20 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/paulinethornberg/label-artist-fetcher/config"
-
-	"github.com/paulinethornberg/label-artist-fetcher/builder/label"
-	"github.com/paulinethornberg/label-artist-fetcher/repository/sverigesradioopenapi"
-
-	"github.com/paulinethornberg/label-artist-fetcher/internalapi"
-
+	"github.com/gorilla/mux"
 	"github.com/paulinethornberg/label-artist-fetcher/builder"
+	"github.com/paulinethornberg/label-artist-fetcher/builder/label"
+	"github.com/paulinethornberg/label-artist-fetcher/config"
+	"github.com/paulinethornberg/label-artist-fetcher/internalapi"
 	"github.com/paulinethornberg/label-artist-fetcher/repository"
+	"github.com/paulinethornberg/label-artist-fetcher/repository/sverigesradioopenapi"
 )
 
 var (
@@ -60,15 +59,15 @@ func setupRepository() {
 }
 
 func setupInternalAPI() {
+	router := mux.NewRouter()
 	handler := internalapi.NewHandler(labelRepository, labelBuilder)
-	mux := http.NewServeMux()
-	mux.HandleFunc("/labels", handler.GetLabels)
+	router.HandleFunc("/labels", handler.GetLabels).Methods(http.MethodGet)
 	go func() {
 		log.Println("started internal API",
 			"endpoint", config.InternalAPIEndpoint,
 		)
 
-		if err := http.ListenAndServe(config.InternalAPIEndpoint, mux); err != http.ErrServerClosed {
+		if err := http.ListenAndServe(config.InternalAPIEndpoint, router); !errors.Is(err, http.ErrServerClosed) {
 			log.Fatal("error in internal API", "error", err)
 		}
 

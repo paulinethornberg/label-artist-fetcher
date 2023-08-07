@@ -26,19 +26,7 @@ func NewHandler(repository repository.Repository, builder builder.Builder) *Hand
 	return handler
 }
 
-//TODO CONSIDER IF I WANT THIS OR NOT
-//func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-//	log.Println("hello debugger")
-//	switch r.Method {
-//	case http.MethodGet:
-//		h.GetLabels(w, r)
-//	default:
-//		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-//	}
-//}
-
 func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
-
 	fromString := r.URL.Query().Get("from")
 	fromInt, err := strconv.ParseInt(fromString, 10, 64)
 	if err != nil {
@@ -56,8 +44,6 @@ func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	toTime := time.Unix(toInt, 0)
-	fmt.Println(fromTime.String())
-	fmt.Println(toTime.String())
 
 	// Handle GET requests here
 	inputChannel := r.URL.Query().Get("channel")
@@ -66,15 +52,16 @@ func (h *Handler) GetLabels(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("channel not supported"))
 		return
 	}
+	channelID := model.ConvertFromStringToID(inputChannel)
 
-	id := model.ConvertFromStringToID(inputChannel)
-	data, err := h.repository.GetPlaylistByChannel(id)
+	data, err := h.repository.GetPlaylistByChannel(channelID, fromTime, toTime)
 	if err != nil {
 		fmt.Print(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("error getting playlist"))
 		return
 	}
+
 	collection := h.builder.LabelArtistCollection(*data)
 
 	jsonCollection, _ := json.Marshal(collection)

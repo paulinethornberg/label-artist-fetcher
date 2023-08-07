@@ -13,13 +13,12 @@ func NewBuilder() *Builder {
 	return &Builder{}
 }
 
-// TODO: WHY DO WE USE POINTERS HERE AGAIN?
 func (b *Builder) LabelArtistCollection(songCollection model.SongCollection) []model.Label {
 	// create map with map of label, artist collection.
 	labelCollection := make(map[string][]model.Artist, 0)
 	for _, song := range songCollection.Songs {
 		if len(labelCollection[song.RecordLabel]) == 0 {
-			// label is not yet added to map, so add new slice with artists
+			// label is not yet added to map, thus add new slice with artists
 			labelCollection[song.RecordLabel] = []model.Artist{{Name: song.Artist}}
 			continue
 		}
