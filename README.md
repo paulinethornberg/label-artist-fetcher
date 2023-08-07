@@ -17,6 +17,9 @@ Returns an array of label names and their respective artists, that have been pla
     + from: `from` (required, UNIX timestamp)
     + to: `to` (required, UNIX timestamp)
 
++ Example query:
+  + `http://localhost:3000/labels?channel=p3&to=1691413764&from=1691320112`
+
 + Request
     + see Parameters above
 
@@ -42,10 +45,8 @@ Returns an array of label names and their respective artists, that have been pla
    ```
       
 + Response 400
-  Faulty request, faulty input variables
+  + Faulty request, faulty input variables
       
 + Response 500
-  Failed to retrieve information.
+  + Failed to retrieve information.
 
-+ Example query: 
-  `http://localhost:3000/labels?channel=p3&to=1691413764&from=1691320112`
